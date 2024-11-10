@@ -178,4 +178,22 @@ button:hover {
 /* Highlight Aggregate Rows */
 .history tr.aggregate {
     background-color: #d1ecf1; /* Light blue background */
+    transition: background-color 0.3s;
+}
+
+.history tr.aggregate:hover {
+    background-color: #cce5ff; /* Slightly darker blue on hover */
+    cursor: pointer;
+}
+
+/* Profit Styling */
+.profit {
+    color: green;
+    font-weight: bold;
+}
+
+/* Loss Styling */
+.loss {
+    color: red;
+    font-weight: bold;
 }

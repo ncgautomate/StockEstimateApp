@@ -5,6 +5,11 @@ console.log('script.js loaded');
 // Initialize ticker symbols with default 'DOGE'
 let tickerSymbols = ['DOGE'];
 
+// Function to generate a unique calculation ID
+function generateCalculationId() {
+    return 'calc_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+}
+
 // Function to populate ticker symbol dropdowns
 function populateTickerDropdowns() {
     const tickerSelects = document.querySelectorAll('.tickerSelect');
@@ -128,6 +133,9 @@ async function performCalculations() {
     let totalSellPrice = 0;
     let totalProfitLoss = 0;
     
+    // Generate a unique calculation ID
+    const calculationId = generateCalculationId();
+    
     // Array to store ticker symbols for Firestore
     const tickerSymbolsForFirestore = [];
     
@@ -187,15 +195,45 @@ async function performCalculations() {
     try {
         document.getElementById('totalShares').innerText = `Total Shares: ${totalShares.toFixed(2)}`;
         document.getElementById('totalBuyPrice').innerText = `Total Buy Price: $${totalBuyPrice.toFixed(2)}`;
+        
+        const totalProfitLossElem = document.getElementById('totalProfitLoss');
+        const averageSellPriceElem = document.getElementById('averageSellPrice');
+        
         if (sellPrice > 0) {
             document.getElementById('totalSellPrice').innerText = `Total Sell Price: $${totalSellPrice.toFixed(2)}`;
             document.getElementById('totalProfitLoss').innerText = `Total Profit/Loss: $${totalProfitLoss.toFixed(2)}`;
             document.getElementById('averageSellPrice').innerText = `Average Sell Price per Share: $${averageSellPrice.toFixed(4)}`;
+            
+            // Apply classes based on profit or loss
+            if (totalProfitLoss > 0) {
+                totalProfitLossElem.classList.add('profit');
+                totalProfitLossElem.classList.remove('loss');
+            } else if (totalProfitLoss < 0) {
+                totalProfitLossElem.classList.add('loss');
+                totalProfitLossElem.classList.remove('profit');
+            } else {
+                totalProfitLossElem.classList.remove('profit', 'loss');
+            }
+            
+            // Similarly, handle average sell price if needed
+            if (averageSellPrice > averagePrice) { // Assuming average sell price > average buy price indicates profit
+                averageSellPriceElem.classList.add('profit');
+                averageSellPriceElem.classList.remove('loss');
+            } else if (averageSellPrice < averagePrice) {
+                averageSellPriceElem.classList.add('loss');
+                averageSellPriceElem.classList.remove('profit');
+            } else {
+                averageSellPriceElem.classList.remove('profit', 'loss');
+            }
+            
         } else {
             document.getElementById('totalSellPrice').innerText = '';
             document.getElementById('totalProfitLoss').innerText = '';
             document.getElementById('averageSellPrice').innerText = '';
+            totalProfitLossElem.classList.remove('profit', 'loss');
+            averageSellPriceElem.classList.remove('profit', 'loss');
         }
+        
         document.getElementById('averagePrice').innerText = `Average Price per Share: $${averagePrice.toFixed(4)}`;
     } catch (error) {
         console.error('Error displaying results:', error);
@@ -224,7 +262,8 @@ async function performCalculations() {
             totalProfitLoss: sellPrice > 0 ? profitLoss.toFixed(2) : 'N/A',
             averagePrice: avgPrice.toFixed(4),
             averageSellPrice: sellPrice > 0 ? averageSellPrice.toFixed(4) : 'N/A',
-            isAggregate: false // Flag to indicate individual calculation
+            isAggregate: false, // Flag to indicate individual calculation
+            calculationId: calculationId // Add calculationId
         };
         
         calculations.push(calculationData);
@@ -240,7 +279,8 @@ async function performCalculations() {
         totalProfitLoss: sellPrice > 0 ? totalProfitLoss.toFixed(2) : 'N/A',
         averagePrice: averagePrice.toFixed(4),
         averageSellPrice: sellPrice > 0 ? averageSellPrice.toFixed(4) : 'N/A',
-        isAggregate: true // Flag to indicate aggregate calculation
+        isAggregate: true, // Flag to indicate aggregate calculation
+        calculationId: calculationId // Add the same calculationId
     };
     
     // Add aggregate calculation to calculations array
@@ -267,6 +307,8 @@ async function performCalculations() {
 }
 
 // Function to append calculation to history table
+const calculationsMap = new Map();
+
 function appendCalculationToHistory(calculation) {
     const historyTableBody = document.querySelector('#historyTable tbody');
     const row = document.createElement('tr');
@@ -298,12 +340,135 @@ function appendCalculationToHistory(calculation) {
         <td>${typeText}</td>
     `;
     
+    // Assign calculationId as a data attribute
+    row.setAttribute('data-calculation-id', calculation.calculationId);
+    
     // Optional: Style aggregate rows differently
     if (calculation.isAggregate) {
-        row.classList.add('aggregate'); // Use CSS class
+        row.classList.add('aggregate'); // Use CSS class for styling
+        // Attach click event listener to aggregate row
+        row.addEventListener('click', handleRowClick);
+        row.style.cursor = 'pointer'; // Change cursor to pointer on hover
     }
     
-    historyTableBody.prepend(row);
+    // Apply profit/loss styling to the "Total Profit/Loss" cell (6th column, index 5)
+    const profitLossCell = row.children[5];
+    
+    if (calculation.totalProfitLoss !== 'N/A') {
+        const profitLossValue = parseFloat(calculation.totalProfitLoss);
+        if (profitLossValue > 0) {
+            profitLossCell.classList.add('profit');
+            profitLossCell.classList.remove('loss');
+        } else if (profitLossValue < 0) {
+            profitLossCell.classList.add('loss');
+            profitLossCell.classList.remove('profit');
+        } else {
+            profitLossCell.classList.remove('profit', 'loss');
+        }
+    } else {
+        profitLossCell.classList.remove('profit', 'loss');
+    }
+    
+    // Group entries by calculationId
+    if (!calculationsMap.has(calculation.calculationId)) {
+        calculationsMap.set(calculation.calculationId, []);
+    }
+    calculationsMap.get(calculation.calculationId).push(row);
+    
+    // If the entry is Aggregate, append all related entries together
+    if (calculation.isAggregate) {
+        const relatedRows = calculationsMap.get(calculation.calculationId);
+        relatedRows.forEach(r => historyTableBody.prepend(r));
+    } else {
+        // For Individual entries, they will be appended after the Aggregate entry
+        // No action needed as Aggregate entry handles their display
+    }
+}
+
+// Function to handle clicking on a row
+function handleRowClick(event) {
+    const row = event.currentTarget;
+    const calculationId = row.getAttribute('data-calculation-id');
+    
+    if (!calculationId) return;
+    
+    // Fetch all entries with this calculationId from Firestore
+    window.db.collection('calculations').where('calculationId', '==', calculationId).get()
+        .then((snapshot) => {
+            const entries = [];
+            let aggregateData = null;
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                if (data.isAggregate) {
+                    aggregateData = data;
+                } else {
+                    entries.push(data);
+                }
+            });
+            
+            if (aggregateData && entries.length > 0) {
+                populateCalculationForm(entries, aggregateData);
+            } else {
+                alert('Unable to retrieve related entries for this calculation.');
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching related entries:', error);
+            alert('An error occurred while fetching the related entries.');
+        });
+}
+
+// Function to populate the calculation form with retrieved data
+function populateCalculationForm(entries, aggregateData) {
+    // Clear existing investment entries
+    const investmentEntriesDiv = document.getElementById('investmentEntries');
+    investmentEntriesDiv.innerHTML = '';
+    
+    // Populate each individual entry
+    entries.forEach(entry => {
+        const entryDiv = document.createElement('div');
+        entryDiv.classList.add('investment-entry');
+        entryDiv.innerHTML = `
+            <label>Investment Amount ($):</label>
+            <input type="number" name="investmentAmount" placeholder="Enter investment amount" required value="${entry.totalBuyPrice}">
+            
+            <label>Buy Price per Share ($):</label>
+            <input type="number" name="buyPrice" placeholder="Enter buy price per share" step="0.0001" required value="${entry.averagePrice}">
+            
+            <label>Ticker Symbol:</label>
+            <select name="tickerSymbol" class="tickerSelect" required>
+                <!-- Options will be populated dynamically -->
+            </select>
+            
+            <button type="button" class="remove-entry">Remove</button>
+        `;
+        investmentEntriesDiv.appendChild(entryDiv);
+        
+        // Populate the ticker dropdown
+        const tickerSelect = entryDiv.querySelector('.tickerSelect');
+        tickerSymbols.forEach(symbol => {
+            const option = document.createElement('option');
+            option.value = symbol;
+            option.textContent = symbol;
+            if (symbol === entry.tickerSymbol) {
+                option.selected = true;
+            }
+            tickerSelect.appendChild(option);
+        });
+        
+        // Attach event listener to the new remove button
+        entryDiv.querySelector('.remove-entry').addEventListener('click', () => {
+            investmentEntriesDiv.removeChild(entryDiv);
+        });
+    });
+    
+    // Populate the sell price
+    const sellPriceInput = document.getElementById('sellPrice');
+    if (aggregateData.averageSellPrice !== 'N/A') {
+        sellPriceInput.value = parseFloat(aggregateData.averageSellPrice).toFixed(4);
+    } else {
+        sellPriceInput.value = '';
+    }
 }
 
 // Function to load calculation history from Firestore on page load
@@ -351,6 +516,8 @@ function clearCalculationHistory() {
             // Clear the history table in the UI
             const historyTableBody = document.querySelector('#historyTable tbody');
             historyTableBody.innerHTML = '';
+            // Clear the calculationsMap
+            calculationsMap.clear();
         })
         .catch((error) => {
             console.error('Error clearing calculation history:', error);
