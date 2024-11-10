@@ -31,25 +31,29 @@
         <div class="calculator-section">
             <h2>Investment Entries</h2>
             <form id="investmentForm">
+               <!-- index.html -->
                 <div id="investmentEntries">
-                    <div class="investment-entry">
-                        <label>Total Shares:</label>
-                        <input type="number" name="totalShares" placeholder="Enter total shares" min="0" step="0.01">
-                        
-                        <label>Investment Amount ($):</label>
-                        <input type="number" name="investmentAmount" placeholder="Enter investment amount" min="0" step="0.01">
-                        
-                        <label>Buy Price per Share ($):</label>
-                        <input type="number" name="buyPrice" placeholder="Enter buy price per share" step="0.0001" required>
-                        
-                        <label>Ticker Symbol:</label>
-                        <select name="tickerSymbol" class="tickerSelect" required>
-                            <!-- Options will be populated dynamically -->
-                        </select>
-                        
-                        <button type="button" class="remove-entry">Remove</button>
-                    </div>
+                  <div class="investment-entry">
+                      <label>Buy Price per Share ($):</label>
+                      <input type="number" name="buyPrice" placeholder="Enter buy price per share" step="0.0001" required data-buy-price>
+                      
+                      <label>Total Shares:</label>
+                      <input type="number" name="totalShares" placeholder="Enter total shares" min="0" step="0.01" data-total-shares>
+                      
+                      <label>Investment Amount ($):</label>
+                      <input type="number" name="investmentAmount" placeholder="Enter investment amount" min="0" step="0.01" data-investment-amount>
+                      
+                      <label>Ticker Symbol:</label>
+                      <select name="tickerSymbol" class="tickerSelect" required>
+                          <option value="DOGE">DOGE</option>
+                          <!-- Other ticker options will be populated dynamically -->
+                      </select>
+                      
+                      <button type="button" class="remove-entry">Remove</button>
+                  </div>
+                  <!-- Add more default entries as needed -->
                 </div>
+
                 <button type="button" id="addEntry">Add Investment</button>
             </form>
             
