@@ -174,3 +174,8 @@ button:hover {
     color: #28a745;
     font-weight: bold;
 }
+
+/* Highlight Aggregate Rows */
+.history tr.aggregate {
+    background-color: #d1ecf1; /* Light blue background */
+}

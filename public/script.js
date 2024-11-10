@@ -125,6 +125,8 @@ async function performCalculations() {
     
     let totalInvestment = 0;
     let totalShares = 0;
+    let totalSellPrice = 0;
+    let totalProfitLoss = 0;
     
     // Array to store ticker symbols for Firestore
     const tickerSymbolsForFirestore = [];
@@ -166,16 +168,20 @@ async function performCalculations() {
     console.log(`Total Buy Price: ${totalBuyPrice}`);
     
     // Calculate total sell price
-    const totalSellPrice = sellPrice > 0 ? totalShares * sellPrice : 0;
+    totalSellPrice = sellPrice > 0 ? totalShares * sellPrice : 0;
     console.log(`Total Sell Price: ${totalSellPrice}`);
     
     // Calculate total profit or loss
-    const totalProfitLoss = sellPrice > 0 ? totalSellPrice - totalBuyPrice : 0;
+    totalProfitLoss = sellPrice > 0 ? totalSellPrice - totalBuyPrice : 0;
     console.log(`Total Profit/Loss: ${totalProfitLoss}`);
     
     // Calculate average price per share based solely on buy price
     const averagePrice = totalBuyPrice / totalShares;
     console.log(`Average Price per Share: ${averagePrice}`);
+    
+    // Calculate average sell price
+    const averageSellPrice = sellPrice > 0 ? totalSellPrice / totalShares : 0;
+    console.log(`Average Sell Price per Share: ${averageSellPrice}`);
     
     // Display results
     try {
@@ -184,9 +190,11 @@ async function performCalculations() {
         if (sellPrice > 0) {
             document.getElementById('totalSellPrice').innerText = `Total Sell Price: $${totalSellPrice.toFixed(2)}`;
             document.getElementById('totalProfitLoss').innerText = `Total Profit/Loss: $${totalProfitLoss.toFixed(2)}`;
+            document.getElementById('averageSellPrice').innerText = `Average Sell Price per Share: $${averageSellPrice.toFixed(4)}`;
         } else {
             document.getElementById('totalSellPrice').innerText = '';
             document.getElementById('totalProfitLoss').innerText = '';
+            document.getElementById('averageSellPrice').innerText = '';
         }
         document.getElementById('averagePrice').innerText = `Average Price per Share: $${averagePrice.toFixed(4)}`;
     } catch (error) {
@@ -214,11 +222,29 @@ async function performCalculations() {
             totalBuyPrice: buyTotal.toFixed(2),
             totalSellPrice: sellPrice > 0 ? sellTotal.toFixed(2) : 'N/A',
             totalProfitLoss: sellPrice > 0 ? profitLoss.toFixed(2) : 'N/A',
-            averagePrice: avgPrice.toFixed(4)
+            averagePrice: avgPrice.toFixed(4),
+            averageSellPrice: sellPrice > 0 ? averageSellPrice.toFixed(4) : 'N/A',
+            isAggregate: false // Flag to indicate individual calculation
         };
         
         calculations.push(calculationData);
     });
+    
+    // Aggregate Calculation Data
+    const aggregateCalculationData = {
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        tickerSymbol: 'Aggregate',
+        totalShares: totalShares.toFixed(2),
+        totalBuyPrice: totalBuyPrice.toFixed(2),
+        totalSellPrice: sellPrice > 0 ? totalSellPrice.toFixed(2) : 'N/A',
+        totalProfitLoss: sellPrice > 0 ? totalProfitLoss.toFixed(2) : 'N/A',
+        averagePrice: averagePrice.toFixed(4),
+        averageSellPrice: sellPrice > 0 ? averageSellPrice.toFixed(4) : 'N/A',
+        isAggregate: true // Flag to indicate aggregate calculation
+    };
+    
+    // Add aggregate calculation to calculations array
+    calculations.push(aggregateCalculationData);
     
     // Use Promise.all to handle multiple Firestore writes
     const savePromises = calculations.map(calc => window.db.collection('calculations').add(calc));
@@ -240,19 +266,6 @@ async function performCalculations() {
         });
 }
 
-// Function to save calculation data to Firestore (not needed anymore as handled above)
-// function saveCalculationToFirestore(calculation) {
-//     window.db.collection('calculations').add(calculation)
-//     .then(() => {
-//         console.log('Calculation saved successfully!');
-//         // No need to manually append to history; onSnapshot will handle it
-//     })
-//     .catch((error) => {
-//         console.error('Error saving calculation:', error);
-//         alert('An error occurred while saving the calculation. Please check the console for more details.');
-//     });
-// }
-
 // Function to append calculation to history table
 function appendCalculationToHistory(calculation) {
     const historyTableBody = document.querySelector('#historyTable tbody');
@@ -267,6 +280,12 @@ function appendCalculationToHistory(calculation) {
     // Ticker Symbol
     const tickerSymbolText = calculation.tickerSymbol;
     
+    // Average Sell Price
+    const averageSellPriceText = calculation.averageSellPrice !== 'N/A' ? `$${calculation.averageSellPrice}` : 'N/A';
+    
+    // Type Indicator
+    const typeText = calculation.isAggregate ? 'Aggregate' : 'Individual';
+    
     row.innerHTML = `
         <td>${timestampText}</td>
         <td>${tickerSymbolText}</td>
@@ -275,7 +294,14 @@ function appendCalculationToHistory(calculation) {
         <td>${calculation.totalSellPrice}</td>
         <td>${calculation.totalProfitLoss}</td>
         <td>${calculation.averagePrice}</td>
+        <td>${averageSellPriceText}</td>
+        <td>${typeText}</td>
     `;
+    
+    // Optional: Style aggregate rows differently
+    if (calculation.isAggregate) {
+        row.classList.add('aggregate'); // Use CSS class
+    }
     
     historyTableBody.prepend(row);
 }
