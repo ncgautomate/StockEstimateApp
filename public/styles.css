@@ -1,3 +1,5 @@
+/* styles.css */
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -7,7 +9,7 @@ body {
 
 .container {
     width: 90%;
-    max-width: 600px;
+    max-width: 800px;
     margin: 50px auto;
     background: #fff;
     padding: 20px;
@@ -19,7 +21,7 @@ h1, h2 {
     color: #333;
 }
 
-.calculator-section, .results {
+.ticker-management, .calculator-section, .results, .history {
     margin: 20px 0;
 }
 
@@ -29,32 +31,146 @@ label {
     color: #555;
 }
 
-input[type="number"] {
+input[type="number"], input[type="text"], select {
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 4px;
 }
 
 button {
-    width: 100%;
-    padding: 10px;
+    padding: 10px 15px;
     background: #28a745;
     border: none;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 4px;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 button:hover {
     background: #218838;
 }
 
-.results p {
+.remove-entry {
+    background: #dc3545;
+    margin-top: 0;
+}
+
+.remove-entry:hover {
+    background: #c82333;
+}
+
+#addEntry {
+    background: #007bff;
+}
+
+#addEntry:hover {
+    background: #0069d9;
+}
+
+#clearHistoryButton {
+    background: #dc3545; /* Red color for delete action */
+    margin-bottom: 10px;
+}
+
+#clearHistoryButton:hover {
+    background: #c82333;
+}
+
+.ticker-management form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#tickerList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#tickerList li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #e9ecef;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+#tickerList li button {
+    background: #dc3545;
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.investment-entry {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    position: relative;
+}
+
+.results p, .history table {
     background: #e9ecef;
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 10px;
+}
+
+.history table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.history th, .history td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.history th {
+    background-color: #343a40;
+    color: white;
+}
+
+@media (max-width: 600px) {
+    .investment-entry {
+        padding: 10px;
+    }
+    
+    button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+/* Spinner Styles */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border-left-color: #28a745;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Adjust loading div alignment */
+#loading {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    color: #28a745;
+    font-weight: bold;
 }
