@@ -20,9 +20,16 @@ function performCalculations() {
 
     // Calculate Total Sell Price (if sellPrice is provided)
     const totalSellPrice = sellPrice > 0 ? totalShares * sellPrice : 0;
+    
 
-    // Calculate Average Price
-    const averagePrice = (totalBuyPrice + (sellPrice > 0 ? totalSellPrice : 0)) / (sellPrice > 0 ? 2 : 1);
+    
+    // Calculate Average Price per Share
+    let averagePrice;
+    if (sellPrice > 0) {
+        averagePrice = buyPrice; // Average cost remains the buy price
+    } else {
+        averagePrice = buyPrice;
+    }
 
     // Display results
     document.getElementById('totalShares').innerText = `Total Shares: ${totalShares.toFixed(2)}`;
