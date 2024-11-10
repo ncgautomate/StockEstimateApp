@@ -1,5 +1,6 @@
 /* styles.css */
 
+/* Base Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -14,44 +15,52 @@ body {
     background: #fff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
 h1, h2 {
     text-align: center;
     color: #333;
+    font-size: 1.5rem;
 }
 
-.ticker-management, .calculator-section, .results, .history {
-    margin: 20px 0;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-}
-
+/* Form and Input Styles */
 input[type="number"], input[type="text"], select {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
 }
 
 button {
     padding: 10px 15px;
-    background: #28a745;
+    font-size: 14px;
     border: none;
     color: #fff;
-    font-size: 14px;
     border-radius: 4px;
     cursor: pointer;
     margin-top: 10px;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background: #218838;
+    opacity: 0.9;
+}
+
+#calculateButton {
+    background: #28a745;
+}
+
+#clearHistoryButton {
+    background: #dc3545;
+    margin-bottom: 10px;
+}
+
+#addEntry {
+    background: #007bff;
 }
 
 .remove-entry {
@@ -63,21 +72,24 @@ button:hover {
     background: #c82333;
 }
 
-#addEntry {
-    background: #007bff;
+#addTickerButton {
+    background: #28a745;
+    border: none;
+    color: white;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
 }
 
-#addEntry:hover {
-    background: #0069d9;
+#addTickerButton:hover {
+    background: #218838;
 }
 
-#clearHistoryButton {
-    background: #dc3545; /* Red color for delete action */
-    margin-bottom: 10px;
-}
-
-#clearHistoryButton:hover {
-    background: #c82333;
+#addTickerButton:disabled {
+    background: #ccc; /* Only apply grey when explicitly disabled */
+    cursor: not-allowed;
 }
 
 .ticker-management form {
@@ -105,8 +117,15 @@ button:hover {
     background: #dc3545;
     padding: 5px 10px;
     font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
+#tickerList li button:hover {
+    background: #c82333;
+}
+
+/* Investment Entry */
 .investment-entry {
     border: 1px solid #ccc;
     padding: 15px;
@@ -115,13 +134,36 @@ button:hover {
     position: relative;
 }
 
-.results p, .history table {
+/* Profit and Loss Styling */
+.profit {
+    color: green !important; /* Use !important to override any other styles */
+    font-weight: bold;
+}
+
+.loss {
+    color: red !important; /* Use !important to override any other styles */
+    font-weight: bold;
+}
+
+/* Results Section */
+.results p {
     background: #e9ecef;
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 10px;
 }
 
+.results p.profit {
+    color: green;
+    font-weight: bold;
+}
+
+.results p.loss {
+    color: red;
+    font-weight: bold;
+}
+
+/* History Section */
 .history table {
     width: 100%;
     border-collapse: collapse;
@@ -138,15 +180,49 @@ button:hover {
     color: white;
 }
 
-@media (max-width: 600px) {
-    .investment-entry {
-        padding: 10px;
-    }
-    
-    button {
-        width: 100%;
-        margin-top: 10px;
-    }
+.history td {
+    color: #555;
+}
+
+/* Ensure Profit/Loss Colors in Table Rows */
+.history td.profit {
+    color: green !important;
+    font-weight: bold;
+}
+
+.history td.loss {
+    color: red !important;
+    font-weight: bold;
+}
+
+/* Highlight Aggregate Rows */
+.history tr.aggregate {
+    background-color: #d1ecf1; /* Light blue background */
+    transition: background-color 0.3s;
+}
+
+.history tr.aggregate:hover {
+    background-color: #cce5ff; /* Slightly darker blue on hover */
+    cursor: pointer;
+}
+
+/* Actions Column Styling */
+.history td.actions {
+    /* Style the actions column if needed */
+}
+
+.history button.delete-row {
+    background: #dc3545;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    color: #fff;
+}
+
+.history button.delete-row:hover {
+    background: #c82333;
 }
 
 /* Spinner Styles */
@@ -163,7 +239,9 @@ button:hover {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Adjust loading div alignment */
@@ -175,25 +253,102 @@ button:hover {
     font-weight: bold;
 }
 
-/* Highlight Aggregate Rows */
-.history tr.aggregate {
-    background-color: #d1ecf1; /* Light blue background */
-    transition: background-color 0.3s;
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1, h2 {
+        font-size: 1.2rem;
+    }
+
+    #calculateButton,
+    #clearHistoryButton,
+    #addEntry,
+    #addTickerButton {
+        width: 100%; /* Full width for buttons */
+    }
+
+    .ticker-management form,
+    .investment-entry {
+        flex-direction: column; /* Stack elements vertically */
+        gap: 10px;
+    }
+
+    .investment-entry {
+        padding: 10px;
+    }
+
+    input[type="number"], input[type="text"], select {
+        font-size: 14px; /* Adjust font size for smaller screens */
+        padding: 8px;
+    }
+
+    .history table {
+        display: block; /* Enable horizontal scrolling */
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    .history th, .history td {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .history th {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .history td {
+        color: #555;
+    }
+
+    /* Increase tap area for buttons */
+    button {
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
+    .remove-entry {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    /* Optimize input fields for readability */
+    input[type="number"],
+    input[type="text"],
+    select {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    /* Adjust Results Section for Mobile */
+    .results {
+        padding: 10px;
+    }
+
+    .results p {
+        font-size: 16px;
+        margin: 5px 0;
+    }
+
+    /* Adjust History Table Font Sizes */
+    .history th,
+    .history td {
+        font-size: 14px;
+    }
 }
 
-.history tr.aggregate:hover {
-    background-color: #cce5ff; /* Slightly darker blue on hover */
-    cursor: pointer;
-}
-
-/* Profit Styling */
-.profit {
-    color: green;
-    font-weight: bold;
-}
-
-/* Loss Styling */
-.loss {
-    color: red;
-    font-weight: bold;
+/* Specific Button Sizes for Desktop */
+@media (min-width: 601px) {
+    #addTickerButton,
+    #addEntry,
+    #calculateButton,
+    #clearHistoryButton,
+    .remove-entry {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
 }
