@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Estimate Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <!-- Include Firebase if needed for future use -->
+    <script src="firebase-config.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Estimate Calculator</h1>
+        
+        <div class="calculator-section">
+            <h2>Calculate Total Shares</h2>
+            <label for="investmentAmount">Investment Amount ($):</label>
+            <input type="number" id="investmentAmount" placeholder="Enter investment amount">
+            
+            <label for="buyPrice">Buy Price per Share ($):</label>
+            <input type="number" id="buyPrice" placeholder="Enter buy price per share">
+            
+            <label for="sellPrice">Sell Price per Share ($):</label>
+            <input type="number" id="sellPrice" placeholder="Enter sell price per share (optional)">
+            
+            <button onclick="performCalculations()">Calculate</button>
+        </div>
+        
+        <div class="results">
+            <h2>Results</h2>
+            <p id="totalShares"></p>
+            <p id="totalBuyPrice"></p>
+            <p id="totalSellPrice"></p>
+            <p id="averagePrice"></p>
+        </div>
+    </div>
+</body>
+</html>
