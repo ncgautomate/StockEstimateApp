@@ -135,6 +135,7 @@ node_modules/
 
 # Firebase configuration
 public/firebase-config.js
+public/firebase-config.js*
 
 # Logs
 firebase-debug.log
