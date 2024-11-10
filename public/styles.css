@@ -1,3 +1,5 @@
+/* styles.css */
+
 /* Base Styles */
 body {
     font-family: Arial, sans-serif;
@@ -70,6 +72,26 @@ button:hover {
     background: #c82333;
 }
 
+#addTickerButton {
+    background: #28a745;
+    border: none;
+    color: white;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+}
+
+#addTickerButton:hover {
+    background: #218838;
+}
+
+#addTickerButton:disabled {
+    background: #ccc; /* Only apply grey when explicitly disabled */
+    cursor: not-allowed;
+}
+
 .ticker-management form {
     display: flex;
     gap: 10px;
@@ -95,6 +117,12 @@ button:hover {
     background: #dc3545;
     padding: 5px 10px;
     font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#tickerList li button:hover {
+    background: #c82333;
 }
 
 /* Investment Entry */
@@ -167,7 +195,7 @@ button:hover {
     font-weight: bold;
 }
 
-
+/* Highlight Aggregate Rows */
 .history tr.aggregate {
     background-color: #d1ecf1; /* Light blue background */
     transition: background-color 0.3s;
@@ -176,6 +204,25 @@ button:hover {
 .history tr.aggregate:hover {
     background-color: #cce5ff; /* Slightly darker blue on hover */
     cursor: pointer;
+}
+
+/* Actions Column Styling */
+.history td.actions {
+    /* Style the actions column if needed */
+}
+
+.history button.delete-row {
+    background: #dc3545;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    color: #fff;
+}
+
+.history button.delete-row:hover {
+    background: #c82333;
 }
 
 /* Spinner Styles */
@@ -218,7 +265,8 @@ button:hover {
 
     #calculateButton,
     #clearHistoryButton,
-    #addEntry {
+    #addEntry,
+    #addTickerButton {
         width: 100%; /* Full width for buttons */
     }
 
@@ -256,25 +304,51 @@ button:hover {
     .history td {
         color: #555;
     }
+
+    /* Increase tap area for buttons */
+    button {
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
+    .remove-entry {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    /* Optimize input fields for readability */
+    input[type="number"],
+    input[type="text"],
+    select {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    /* Adjust Results Section for Mobile */
+    .results {
+        padding: 10px;
+    }
+
+    .results p {
+        font-size: 16px;
+        margin: 5px 0;
+    }
+
+    /* Adjust History Table Font Sizes */
+    .history th,
+    .history td {
+        font-size: 14px;
+    }
 }
 
-
-#addTickerButton {
-    background: #28a745;
-    border: none;
-    color: white;
-    font-size: 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 10px 15px;
-    transition: background-color 0.3s ease;
-}
-
-#addTickerButton:hover {
-    background: #218838;
-}
-
-#addTickerButton:disabled {
-    background: #ccc; /* Only apply grey when explicitly disabled */
-    cursor: not-allowed;
+/* Specific Button Sizes for Desktop */
+@media (min-width: 601px) {
+    #addTickerButton,
+    #addEntry,
+    #calculateButton,
+    #clearHistoryButton,
+    .remove-entry {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
 }
