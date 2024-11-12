@@ -1,169 +1,178 @@
 /* styles.css */
 
-/* Base Styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+/* Reset default margins and paddings */
+* {
     margin: 0;
     padding: 0;
-}
-
-.container {
-    width: 90%;
-    max-width: 800px;
-    margin: 50px auto;
-    background: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
 }
 
+/* Set html and body to take full height */
+html, body {
+    height: 100%;
+}
+
+/* Use flexbox for body to create a sticky footer layout */
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+}
+
+/* Main container grows to fill available space */
+.container {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
+/* Header Styles */
 h1, h2 {
     text-align: center;
-    color: #333;
-    font-size: 1.5rem;
+    margin-bottom: 20px;
 }
 
-/* Form and Input Styles */
-input[type="number"], input[type="text"], select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-
-button {
-    padding: 10px 15px;
-    font-size: 14px;
-    border: none;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    opacity: 0.9;
-}
-
-#calculateButton {
-    background: #28a745;
-}
-
-#clearHistoryButton {
-    background: #dc3545;
-    margin-bottom: 10px;
-}
-
-#addEntry {
-    background: #007bff;
-}
-
-.remove-entry {
-    background: #dc3545;
-    margin-top: 0;
-}
-
-.remove-entry:hover {
-    background: #c82333;
-}
-
-#addTickerButton {
-    background: #28a745;
-    border: none;
-    color: white;
-    font-size: 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 10px 15px;
-    transition: background-color 0.3s ease;
-}
-
-#addTickerButton:hover {
-    background: #218838;
-}
-
-#addTickerButton:disabled {
-    background: #ccc; /* Only apply grey when explicitly disabled */
-    cursor: not-allowed;
+/* Ticker Symbol Management Section */
+.ticker-management {
+    margin-bottom: 30px;
 }
 
 .ticker-management form {
     display: flex;
+    justify-content: center;
     gap: 10px;
     margin-bottom: 10px;
 }
 
-#tickerList {
-    list-style-type: none;
-    padding: 0;
+.ticker-management input {
+    width: 200px;
 }
 
-#tickerList li {
+.ticker-management button {
+    padding: 8px 16px;
+}
+
+.ticker-management ul {
+    list-style-type: none;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #e9ecef;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ticker-management li {
+    background-color: #f2f2f2;
     padding: 8px 12px;
     border-radius: 4px;
-    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-#tickerList li button {
-    background: #dc3545;
-    padding: 5px 10px;
-    font-size: 12px;
+.ticker-management li button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 4px 8px;
     border-radius: 4px;
     cursor: pointer;
 }
 
-#tickerList li button:hover {
-    background: #c82333;
+.ticker-management li button:hover {
+    background-color: #e60000;
 }
 
-/* Investment Entry */
+/* Calculator Section */
+.calculator-section {
+    margin-bottom: 30px;
+}
+
 .investment-entry {
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     padding: 15px;
-    margin-bottom: 10px;
     border-radius: 4px;
-    position: relative;
+    margin-bottom: 10px;
 }
 
-/* Profit and Loss Styling */
-.profit {
-    color: green !important; /* Use !important to override any other styles */
-    font-weight: bold;
+.investment-entry label {
+    display: block;
+    margin-bottom: 5px;
 }
 
-.loss {
-    color: red !important; /* Use !important to override any other styles */
-    font-weight: bold;
+.investment-entry input, .investment-entry select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.investment-entry button.remove-entry {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.investment-entry button.remove-entry:hover {
+    background-color: #e60000;
+}
+
+#addEntry, #calculateButton, #clearHistoryButton, #addTickerButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#addEntry:hover, #calculateButton:hover, #clearHistoryButton:hover, #addTickerButton:hover {
+    background-color: #45a049;
+}
+
+/* Spinner Styles */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border-left-color: #4CAF50;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+#loading {
+    display: none;
+    align-items: center;
+    margin-top: 10px;
 }
 
 /* Results Section */
 .results p {
-    background: #e9ecef;
-    padding: 10px;
-    border-radius: 4px;
     margin-bottom: 10px;
-}
-
-.results p.profit {
-    color: green;
-    font-weight: bold;
-}
-
-.results p.loss {
-    color: red;
-    font-weight: bold;
+    font-size: 1.1em;
 }
 
 /* History Section */
+.history {
+    margin-bottom: 30px;
+}
+
+.rows-per-page {
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+.rows-per-page label {
+    margin-right: 5px;
+}
+
 .history table {
     width: 100%;
     border-collapse: collapse;
@@ -175,180 +184,95 @@ button:hover {
     text-align: center;
 }
 
+.history tr:nth-child(even){background-color: #f9f9f9;}
+
+.history tr:hover {background-color: #f1f1f1;}
+
 .history th {
-    background-color: #343a40;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #4CAF50;
     color: white;
 }
 
-.history td {
-    color: #555;
-}
-
-/* Ensure Profit/Loss Colors in Table Rows */
-.history td.profit {
-    color: green !important;
+/* Profit/Loss Styling */
+.profit {
+    color: green;
     font-weight: bold;
 }
 
-.history td.loss {
-    color: red !important;
+.loss {
+    color: red;
     font-weight: bold;
 }
 
-/* Highlight Aggregate Rows */
-.history tr.aggregate {
-    background-color: #d1ecf1; /* Light blue background */
-    transition: background-color 0.3s;
+/* Footer Styles */
+footer {
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 10px 0;
 }
 
-.history tr.aggregate:hover {
-    background-color: #cce5ff; /* Slightly darker blue on hover */
-    cursor: pointer;
+footer a {
+    color: #4CAF50;
+    text-decoration: none;
 }
 
-/* Actions Column Styling */
-.history td.actions {
-    /* Style the actions column if needed */
-}
-
-.history button.delete-row {
-    background: #dc3545;
-    padding: 5px 10px;
-    font-size: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: none;
-    color: #fff;
-}
-
-.history button.delete-row:hover {
-    background: #c82333;
-}
-
-/* Spinner Styles */
-.spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border-left-color: #28a745;
-    animation: spin 1s linear infinite;
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 8px;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Adjust loading div alignment */
-#loading {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    color: #28a745;
-    font-weight: bold;
+footer a:hover {
+    text-decoration: underline;
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
-    .container {
-        padding: 15px;
+@media screen and (max-width: 768px) {
+    .rows-per-page {
+        text-align: center;
     }
-
-    h1, h2 {
-        font-size: 1.2rem;
+    
+    .ticker-management form, .calculator-section form {
+        flex-direction: column;
+        align-items: center;
     }
-
-    #calculateButton,
-    #clearHistoryButton,
-    #addEntry,
-    #addTickerButton {
-        width: 100%; /* Full width for buttons */
-    }
-
-    .ticker-management form,
-    .investment-entry {
-        flex-direction: column; /* Stack elements vertically */
-        gap: 10px;
-    }
-
-    .investment-entry {
-        padding: 10px;
-    }
-
-    input[type="number"], input[type="text"], select {
-        font-size: 14px; /* Adjust font size for smaller screens */
-        padding: 8px;
-    }
-
-    .history table {
-        display: block; /* Enable horizontal scrolling */
-        overflow-x: auto;
+    
+    .ticker-management input, .ticker-management button, .investment-entry input, .investment-entry select, .investment-entry button.remove-entry {
         width: 100%;
-    }
-
-    .history th, .history td {
-        font-size: 12px;
-        padding: 8px;
-    }
-
-    .history th {
-        background-color: #343a40;
-        color: white;
-    }
-
-    .history td {
-        color: #555;
-    }
-
-    /* Increase tap area for buttons */
-    button {
-        padding: 12px 20px;
-        font-size: 16px;
-    }
-
-    .remove-entry {
-        padding: 8px 12px;
-        font-size: 14px;
-    }
-
-    /* Optimize input fields for readability */
-    input[type="number"],
-    input[type="text"],
-    select {
-        font-size: 16px;
-        padding: 10px;
-    }
-
-    /* Adjust Results Section for Mobile */
-    .results {
-        padding: 10px;
-    }
-
-    .results p {
-        font-size: 16px;
-        margin: 5px 0;
-    }
-
-    /* Adjust History Table Font Sizes */
-    .history th,
-    .history td {
-        font-size: 14px;
+        max-width: 300px;
     }
 }
 
-/* Specific Button Sizes for Desktop */
-@media (min-width: 601px) {
-    #addTickerButton,
-    #addEntry,
-    #calculateButton,
-    #clearHistoryButton,
-    .remove-entry {
-        padding: 8px 12px;
-        font-size: 14px;
-    }
+/* Adjust spacing after the investment form */
+.calculator-section form {
+    margin-bottom: 20px;
+}
+
+/* Style the Calculate button */
+#calculateButton {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto; /* Center the button */
+    display: block;
+}
+
+.aggregate {
+    background-color: #f0f0f0; /* Light gray background for aggregate rows */
+}
+
+.actions button {
+    background-color: #ff4d4d; /* Red background for delete buttons */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.actions button:hover {
+    background-color: #e60000; /* Darker red on hover */
+}
+
+.new-entry {
+    animation: highlight 2s ease;
+}
+
+@keyframes highlight {
+    from { background-color: #ffff99; }
+    to { background-color: transparent; }
 }

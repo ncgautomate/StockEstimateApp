@@ -28,37 +28,37 @@
             </ul>
         </div>
         
+        <!-- Calculator Section -->
+        
         <div class="calculator-section">
             <h2>Investment Entries</h2>
             <form id="investmentForm">
-               <!-- index.html -->
                 <div id="investmentEntries">
-                  <div class="investment-entry">
-                      <label>Buy Price per Share ($):</label>
-                      <input type="number" name="buyPrice" placeholder="Enter buy price per share" step="0.0001" required data-buy-price>
-                      
-                      <label>Total Shares:</label>
-                      <input type="number" name="totalShares" placeholder="Enter total shares" min="0" step="0.01" data-total-shares>
-                      
-                      <label>Investment Amount ($):</label>
-                      <input type="number" name="investmentAmount" placeholder="Enter investment amount" min="0" step="0.01" data-investment-amount>
-                      
-                      <label>Ticker Symbol:</label>
-                      <select name="tickerSymbol" class="tickerSelect" required>
-                          <option value="DOGE">DOGE</option>
-                          <!-- Other ticker options will be populated dynamically -->
-                      </select>
-                      
-                      <button type="button" class="remove-entry">Remove</button>
-                  </div>
-                  <!-- Add more default entries as needed -->
+                    <div class="investment-entry">
+                        <label>Buy Price per Share ($):</label>
+                        <input type="number" name="buyPrice" placeholder="Enter buy price per share" step="0.0001" required data-buy-price>
+                        
+                        <label>Total Shares:</label>
+                        <input type="number" name="totalShares" placeholder="Enter total shares" min="0" step="0.01" data-total-shares>
+                        
+                        <label>Investment Amount ($):</label>
+                        <input type="number" name="investmentAmount" placeholder="Enter investment amount" min="0" step="0.01" data-investment-amount>
+                        
+                        <label>Ticker Symbol:</label>
+                        <select name="tickerSymbol" class="tickerSelect" required>
+                            <option value="DOGE">DOGE</option>
+                            <!-- Other ticker options will be populated dynamically -->
+                        </select>
+                        
+                        <label>Sell Price per Share ($):</label>
+                        <input type="number" name="sellPrice" placeholder="Enter sell price per share (optional)" step="0.0001" min="0" data-sell-price>
+                        
+                        <button type="button" class="remove-entry">Remove</button>
+                    </div>
+                    <!-- Add more default entries as needed -->
                 </div>
-
                 <button type="button" id="addEntry">Add Investment</button>
             </form>
-            
-            <label for="sellPrice">Sell Price per Share ($):</label>
-            <input type="number" id="sellPrice" placeholder="Enter sell price per share (optional)" step="0.0001" min="0">
             
             <button id="calculateButton">Calculate</button>
             <!-- Loading Indicator with Spinner -->
@@ -67,7 +67,9 @@
                 <span>Calculating...</span>
             </div>
         </div>
+
         
+        <!-- Results Section -->
         <div class="results">
             <h2>Results</h2>
             <p id="totalShares"></p>
@@ -79,19 +81,33 @@
             <p id="averageSellPrice"></p> <!-- New Paragraph for Average Sell Price -->
         </div>
         
+        <!-- History Section -->
         <div class="history">
             <h2>Calculation History</h2>
             <button id="clearHistoryButton">Clear History</button>
+            
+            <!-- Dropdown to select number of rows displayed -->
+            <div class="rows-per-page">
+                <label for="rowsPerPage">Rows per page:</label>
+                <select id="rowsPerPage">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20" selected>20</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+            
             <table id="historyTable">
                 <thead>
                     <tr>
+                        <!-- Removed Row # column -->
                         <th>Timestamp</th>
                         <th>Ticker Symbol</th>
                         <th>Total Shares</th>
                         <th>Total Investment ($)</th>
                         <th>Total Sell Price ($)</th>
                         <th>Total Profit/Loss ($)</th>
-                        <th>Average Price per Share ($)</th>
+                        <th>Avg Cost per Share ($)</th> <!-- Renamed Column -->
                         <th>Average Sell Price ($)</th>
                         <th>Type</th>
                         <th>Actions</th> <!-- New Column for Delete Button -->
@@ -103,5 +119,10 @@
             </table>
         </div>
     </div>
+    
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; <a href="https://www.TrionxAI.com" target="_blank">TrionxAI</a></p>
+    </footer>
 </body>
 </html>
