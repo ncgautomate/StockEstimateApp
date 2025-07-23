@@ -4,17 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Estimate Calculator</title>
+    <title>Stock Investment Calculator</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js" defer></script>
     <script src="script.js" defer></script>
 </head>
 <body>
     <div class="container">
-        <h1>Stock Estimate Calculator</h1>
+        <h1>Stock Investment Calculator</h1>
         
         <!-- Ticker Symbol Management Section -->
         <div class="ticker-management">
@@ -60,7 +56,11 @@
                 <button type="button" id="addEntry">Add Investment</button>
             </form>
             
-            <button id="calculateButton">Calculate</button>
+            <div class="button-container">
+                <button id="calculateButton">Calculate</button>
+                <!-- Clear button will be added by JavaScript -->
+            </div>
+            
             <!-- Loading Indicator with Spinner -->
             <div id="loading" style="display:none;">
                 <div class="spinner"></div>
@@ -79,44 +79,6 @@
             <p id="totalProfitLoss"></p>
             <p id="averagePrice"></p>
             <p id="averageSellPrice"></p> <!-- New Paragraph for Average Sell Price -->
-        </div>
-        
-        <!-- History Section -->
-        <div class="history">
-            <h2>Calculation History</h2>
-            <button id="clearHistoryButton">Clear History</button>
-            
-            <!-- Dropdown to select number of rows displayed -->
-            <div class="rows-per-page">
-                <label for="rowsPerPage">Rows per page:</label>
-                <select id="rowsPerPage">
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20" selected>20</option>
-                    <option value="50">50</option>
-                </select>
-            </div>
-            
-            <table id="historyTable">
-                <thead>
-                    <tr>
-                        <!-- Removed Row # column -->
-                        <th>Timestamp</th>
-                        <th>Ticker Symbol</th>
-                        <th>Total Shares</th>
-                        <th>Total Investment ($)</th>
-                        <th>Total Sell Price ($)</th>
-                        <th>Total Profit/Loss ($)</th>
-                        <th>Avg Cost per Share ($)</th> <!-- Renamed Column -->
-                        <th>Average Sell Price ($)</th>
-                        <th>Type</th>
-                        <th>Actions</th> <!-- New Column for Delete Button -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- History entries will be appended here -->
-                </tbody>
-            </table>
         </div>
     </div>
     
