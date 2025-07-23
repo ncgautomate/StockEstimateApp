@@ -129,13 +129,16 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-
-# Node modules
+# Development and build artifacts
 node_modules/
+dist/
+build/
 
-# Firebase configuration
-public/firebase-config.js
-public/firebase-config.js*
-
-# Logs
-firebase-debug.log
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
