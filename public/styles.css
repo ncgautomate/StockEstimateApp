@@ -118,7 +118,7 @@ h1, h2 {
     background-color: #e60000;
 }
 
-#addEntry, #calculateButton, #clearHistoryButton, #addTickerButton {
+#addEntry, #calculateButton, #clearButton, #addTickerButton {
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -126,10 +126,20 @@ h1, h2 {
     border-radius: 4px;
     cursor: pointer;
     margin-top: 10px;
+    margin-right: 10px;
 }
 
-#addEntry:hover, #calculateButton:hover, #clearHistoryButton:hover, #addTickerButton:hover {
+#addEntry:hover, #calculateButton:hover, #clearButton:hover, #addTickerButton:hover {
     background-color: #45a049;
+}
+
+#clearButton {
+    background-color: #f44336;
+    margin-left: 10px;
+}
+
+#clearButton:hover {
+    background-color: #da190b;
 }
 
 /* Spinner Styles */
@@ -157,42 +167,6 @@ h1, h2 {
 .results p {
     margin-bottom: 10px;
     font-size: 1.1em;
-}
-
-/* History Section */
-.history {
-    margin-bottom: 30px;
-}
-
-.rows-per-page {
-    margin-bottom: 10px;
-    text-align: right;
-}
-
-.rows-per-page label {
-    margin-right: 5px;
-}
-
-.history table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.history th, .history td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-}
-
-.history tr:nth-child(even){background-color: #f9f9f9;}
-
-.history tr:hover {background-color: #f1f1f1;}
-
-.history th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    background-color: #4CAF50;
-    color: white;
 }
 
 /* Profit/Loss Styling */
@@ -224,10 +198,6 @@ footer a:hover {
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    .rows-per-page {
-        text-align: center;
-    }
-    
     .ticker-management form, .calculator-section form {
         flex-direction: column;
         align-items: center;
@@ -252,27 +222,15 @@ footer a:hover {
     display: block;
 }
 
-.aggregate {
-    background-color: #f0f0f0; /* Light gray background for aggregate rows */
+/* Style button container */
+.button-container {
+    text-align: center;
+    margin-top: 20px;
 }
 
-.actions button {
-    background-color: #ff4d4d; /* Red background for delete buttons */
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-.actions button:hover {
-    background-color: #e60000; /* Darker red on hover */
-}
-
-.new-entry {
-    animation: highlight 2s ease;
-}
-
-@keyframes highlight {
-    from { background-color: #ffff99; }
-    to { background-color: transparent; }
+#calculateButton, #clearButton {
+    display: inline-block;
+    width: auto;
+    min-width: 120px;
+    margin: 0 5px;
 }
